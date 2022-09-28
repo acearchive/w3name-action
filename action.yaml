@@ -1,0 +1,32 @@
+name: "w3name Action"
+author: "Ace Archive"
+description: >
+  Publish IPNS names with w3name.
+inputs:
+  private-key:
+    description: >
+      The private signing key for IPNS. This is a secret.
+
+      You can create a new private key with the `ipfs key gen` command.
+    required: true
+  path:
+    description: >
+      The path the IPNS name should resolve to, like an `/ipfs/xxx` or
+      `/ipns/xxx` path.
+    required: true
+  init:
+    description: >
+      Create the initial revision of the IPNS name for the given private key.
+      You must specify this option if this is the first time this key is being
+      used with w3name.
+    required: false
+outputs:
+  name:
+    description: >
+      The published IPNS name.
+runs:
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: tag
+  color: blue
