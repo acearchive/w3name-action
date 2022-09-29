@@ -5,7 +5,8 @@ description: >
 inputs:
   private-key:
     description: >
-      The private signing key for IPNS. This is a secret.
+      The base64-encoded private signing key for the IPNS name. This is a
+      secret.
 
       You can create a new private key with the `ipfs key gen` command.
     required: true
@@ -13,12 +14,17 @@ inputs:
     description: >
       The path the IPNS name should resolve to, like an `/ipfs/xxx` or
       `/ipns/xxx` path.
-    required: true
+
+      If this input is not provided, then the action will attempt to resolve the
+      current path associated with the given key and re-publish it.
+    required: false
   init:
     description: >
       Create the initial revision of the IPNS name for the given private key.
       You must specify this option if this is the first time this key is being
       used with w3name.
+
+      If you specify this input, then you must also provide a `path`.
     required: false
 outputs:
   name:
