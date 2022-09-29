@@ -21,11 +21,12 @@ inputs:
   init:
     description: >
       Create the initial revision of the IPNS name for the given private key.
-      You must specify this option if this is the first time this key is being
-      used with w3name.
+      This must be `true` if this is the first time this key is being used with
+      w3name.
 
-      If you specify this input, then you must also provide a `path`.
-    required: false
+      If this is `true`, then you must also provide a `path`.
+    required: true
+    default: "false"
 outputs:
   name:
     description: >
