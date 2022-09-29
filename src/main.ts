@@ -1,11 +1,17 @@
 import * as core from "@actions/core";
 import * as Name from "w3name";
 
-const publish = async (
-  privateKey: Uint8Array,
-  isInit: boolean,
-  newPath?: string
-): Promise<void> => {
+interface Inputs {
+  privateKey: Uint8Array;
+  newPath?: string;
+  isInit: boolean;
+}
+
+export const publish = async ({
+  privateKey,
+  newPath,
+  isInit,
+}: Inputs): Promise<void> => {
   const name = await Name.from(privateKey);
 
   if (isInit && newPath !== undefined) {
@@ -24,26 +30,41 @@ const publish = async (
   core.setOutput("name", name.toString());
 };
 
-const run = async (): Promise<void> => {
-  const encodedPrivateKey = core.getInput("private-key", { required: true });
-  const newPath = core.getInput("path", { required: false });
-  const isInit = core.getBooleanInput("init", { required: false });
-
-  core.setSecret(encodedPrivateKey);
-
+export const parseInputs = (
+  encodedPrivateKey: string,
+  newPath: string,
+  isInit: boolean
+): Inputs => {
   const maybeNewPath = newPath.length === 0 ? undefined : newPath;
 
   if (isInit && maybeNewPath === undefined) {
-    core.setFailed(
-      "If you specify `init`, then you must also specify a `path`."
+    throw new Error(
+      "if you specify `init`, then you must also specify a `path`"
     );
-    return;
   }
 
   const privateKey = Buffer.from(encodedPrivateKey, "base64");
 
+  if (privateKey.toString("base64") != encodedPrivateKey) {
+    throw new Error("the private signing key must be base64-encoded");
+  }
+
+  return {
+    privateKey,
+    newPath: maybeNewPath,
+    isInit,
+  };
+};
+
+const run = async (): Promise<void> => {
   try {
-    await publish(privateKey, isInit, maybeNewPath);
+    const encodedPrivateKey = core.getInput("private-key", { required: true });
+    const newPath = core.getInput("path", { required: false });
+    const isInit = core.getBooleanInput("init", { required: false });
+
+    core.setSecret(encodedPrivateKey);
+
+    await publish(parseInputs(encodedPrivateKey, newPath, isInit));
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
