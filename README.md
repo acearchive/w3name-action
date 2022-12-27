@@ -1,11 +1,9 @@
-![Unmaintained](https://img.shields.io/badge/unmaintained-%F0%9F%9B%87-red?style=for-the-badge)
-
-**UNMAINTAINED**
+⚠ **UNMAINTAINED**
 
 *Since it is no longer being used for Ace Archive, I am not planning on
-maintaining this tool. If you want to pick up maintenance, I'm happy to update
-this README to link to your fork. Also check out
-[pawanpaudel93/w3name-action](https://github.com/pawanpaudel93/w3name-action)
+maintaining this tool. If you want to pick up maintenance, feel free to fork the
+repo. Also check out
+[pawanpaudel93/w3name-action](https://github.com/pawanpaudel93/w3name-action),
 which does essentially the same thing.*
 
 # w3name-action
